@@ -1,7 +1,8 @@
-import {atob as _atob} from 'abab';
+import { atob as _atob } from 'abab'
 import _XMLHttpRequest from './XMLHttpRequest'
 import copyProperties from './copyProperties'
-import EventTarget from "./EventTarget"
+import EventTarget from './EventTarget'
+import _TextDecoder from './TextDecoder'
 
 export function createScopedThreejs(canvas) {
   // adapt canvas
@@ -13,21 +14,21 @@ export function createScopedThreejs(canvas) {
     get() {
       return {
         width: this.width + 'px',
-        height: this.height + 'px'
+        height: this.height + 'px',
       }
-    }
+    },
   })
 
   Object.defineProperty(canvas, 'clientHeight', {
     get() {
       return this.height
-    }
+    },
   })
 
   Object.defineProperty(canvas, 'clientWidth', {
     get() {
       return this.width
-    }
+    },
   })
 
   copyProperties(canvas.constructor.prototype, EventTarget.prototype)
@@ -37,13 +38,13 @@ export function createScopedThreejs(canvas) {
     createElementNS(_, type) {
       if (type === 'canvas') return canvas
       if (type === 'img') return canvas.createImage()
-    }
+    },
   }
   copyProperties(document.constructor.prototype, EventTarget.prototype)
 
   // eslint-disable-next-line
   const window = {
-    AudioContext: function() {},
+    AudioContext: function () {},
     URL: {},
   }
   copyProperties(window.constructor.prototype, EventTarget.prototype)
@@ -56,10 +57,12 @@ export function createScopedThreejs(canvas) {
   // eslint-disable-next-line
   const XMLHttpRequest = _XMLHttpRequest
 
-  const exports = {};
+  const TextDecoder = _TextDecoder
+
+  const exports = {}
 
   // eslint-disable-next-line
-  const HTMLCanvasElement = undefined;
+  const HTMLCanvasElement = undefined
 
   // three.js source code will be injected here
   // eslint-disable-next-line
@@ -67,4 +70,3 @@ export function createScopedThreejs(canvas) {
 
   return exports
 }
-
