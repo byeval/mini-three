@@ -1,30 +1,30 @@
-const fs = require("fs");
-const path = require("path");
-const StringReplacePlugin = require("string-replace-webpack-plugin");
+const fs = require('fs')
+const path = require('path')
+const StringReplacePlugin = require('string-replace-webpack-plugin')
 
 function resolveThreeModule() {
-  const threePath = require.resolve("three");
-  const code = fs.readFileSync(path.resolve(threePath), "utf8");
-  return code;
+  const threePath = require.resolve('three')
+  const code = fs.readFileSync(path.resolve(threePath), 'utf8')
+  return code
 }
 
 module.exports = {
-  entry: path.join(__dirname, "../src/index"),
-  target: "web",
+  entry: path.join(__dirname, '../src/index'),
+  target: 'web',
   output: {
-    path: path.join(__dirname, "../dist"),
-    filename: "index.js",
-    libraryTarget: "commonjs",
+    path: path.join(__dirname, '../dist'),
+    filename: 'index.js',
+    libraryTarget: 'commonjs',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader",
+        loader: 'babel-loader',
         options: {
-          presets: ["@babel/preset-env"],
-          plugins: ["@babel/plugin-proposal-class-properties"],
+          presets: ['@babel/preset-env'],
+          plugins: ['@babel/plugin-proposal-class-properties'],
         },
       },
       {
@@ -34,7 +34,7 @@ module.exports = {
             {
               pattern: /__INJECT_THREE__/gi,
               replacement: () => {
-                return resolveThreeModule();
+                return resolveThreeModule()
               },
             },
           ],
@@ -49,4 +49,4 @@ module.exports = {
   optimization: {
     minimize: true,
   },
-};
+}

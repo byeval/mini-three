@@ -1,38 +1,38 @@
-const _events = new WeakMap()
+const _events = new WeakMap();
 
 class Touch {
   constructor(touch) {
     // CanvasTouch{identifier, x, y}
     // Touch{identifier, pageX, pageY, clientX, clientY, force}
-    this.identifier = touch.identifier
+    this.identifier = touch.identifier;
 
-    this.force = touch.force === undefined ? 1 : touch.force
-    this.pageX = touch.pageX || touch.x
-    this.pageY = touch.pageY || touch.y
-    this.clientX = touch.clientX || touch.x
-    this.clientY = touch.clientY || touch.y
+    this.force = touch.force === undefined ? 1 : touch.force;
+    this.pageX = touch.pageX || touch.x;
+    this.pageY = touch.pageY || touch.y;
+    this.clientX = touch.clientX || touch.x;
+    this.clientY = touch.clientY || touch.y;
 
-    this.screenX = this.pageX
-    this.screenY = this.pageY
+    this.screenX = this.pageX;
+    this.screenY = this.pageY;
   }
 }
 
 export default class EventTarget {
   constructor() {
-    _events.set(this, {})
+    _events.set(this, {});
   }
 
   addEventListener(type, listener, options = {}) {
-    let events = _events.get(this)
+    let events = _events.get(this);
 
     if (!events) {
-      events = {}
-      _events.set(this, events)
+      events = {};
+      _events.set(this, events);
     }
     if (!events[type]) {
-      events[type] = []
+      events[type] = [];
     }
-    events[type].push(listener)
+    events[type].push(listener);
 
     if (options.capture) {
       // console.warn('EventTarget.addEventListener: options.capture is not implemented.')
@@ -46,16 +46,16 @@ export default class EventTarget {
   }
 
   removeEventListener(type, listener) {
-    const events = _events.get(this)
+    const events = _events.get(this);
 
     if (events) {
-      const listeners = events[type]
+      const listeners = events[type];
 
       if (listeners && listeners.length > 0) {
         for (let i = listeners.length; i--; i > 0) {
           if (listeners[i] === listener) {
-            listeners.splice(i, 1)
-            break
+            listeners.splice(i, 1);
+            break;
           }
         }
       }
@@ -64,23 +64,23 @@ export default class EventTarget {
 
   dispatchEvent(event = {}) {
     if (typeof event.preventDefault !== 'function') {
-      event.preventDefault = () => {}
+      event.preventDefault = () => {};
     }
     if (typeof event.stopPropagation !== 'function') {
-      event.stopPropagation = () => {}
+      event.stopPropagation = () => {};
     }
-    const listeners = _events.get(this)[event.type]
+    const listeners = _events.get(this)[event.type];
 
     if (listeners) {
       for (let i = 0; i < listeners.length; i++) {
-        listeners[i](event)
+        listeners[i](event);
       }
     }
   }
 
   dispatchTouchEvent(e = {}) {
-    const target = { ...this }
-    const changedTouches = e.changedTouches.map((touch) => new Touch(touch))
+    const target = { ...this };
+    const changedTouches = e.changedTouches.map((touch) => new Touch(touch));
 
     const event = {
       changedTouches: changedTouches,
@@ -94,25 +94,26 @@ export default class EventTarget {
       type: e.type,
       cancelBubble: false,
       cancelable: false,
-    }
+    };
 
-    this.dispatchEvent(event)
+    this.dispatchEvent(event);
 
     if (changedTouches.length) {
-      const touch = changedTouches[0]
-      const pointerEvent = {
-        pageX: touch.pageX,
-        pageY: touch.pageY,
-        pointerId: touch.identifier,
-        type: {
-          touchstart: 'pointerdown',
-          touchmove: 'pointermove',
-          touchend: 'pointerup',
-        }[e.type],
-        pointerType: 'touch',
-      }
+      changedTouches.forEach((touch) => {
+        const pointerEvent = {
+          pageX: touch.pageX,
+          pageY: touch.pageY,
+          pointerId: touch.identifier,
+          type: {
+            touchstart: 'pointerdown',
+            touchmove: 'pointermove',
+            touchend: 'pointerup',
+          }[e.type],
+          pointerType: 'touch',
+        };
 
-      this.dispatchEvent(pointerEvent)
+        this.dispatchEvent(pointerEvent);
+      });
     }
   }
 

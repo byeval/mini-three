@@ -1,17 +1,17 @@
 {
   "name": "@byeval/mini-three",
   "version": "0.0.1",
-  "description": "ThreeJS adapter for WeChat MiniProgram",
+  "description": "Three.JS adapter for WeChat MiniProgram",
   "main": "dist/index.js",
   "scripts": {
     "dev": "webpack --config build/webpack.config.js --watch",
     "build": "webpack --hide-modules --config build/webpack.config.js",
     "lint": "eslint \"src/**/*.js\"",
     "prettier": "prettier -w \"src/**/*.js\"",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run prettier && npm run lint && npm run build"
   },
   "miniprogram": "dist/",
-  "author": "byeval",
+  "author": "byeval <cxh710200711@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/byeval/mini-three",
   "repository": {

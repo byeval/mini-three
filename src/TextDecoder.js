@@ -6,21 +6,21 @@ export default class TextDecoder {
    */
   decode(uint8Array) {
     if (uint8Array instanceof ArrayBuffer)
-      uint8Array = new Uint8Array(uint8Array)
+      uint8Array = new Uint8Array(uint8Array);
 
     // from LoaderUtils.js
-    let s = ''
+    let s = '';
 
     // Implicitly assumes little-endian.
     for (let i = 0, il = uint8Array.length; i < il; i++)
-      s += String.fromCharCode(uint8Array[i])
+      s += String.fromCharCode(uint8Array[i]);
 
     try {
       // merges multi-byte utf-8 characters.
-      return decodeURIComponent(escape(s))
+      return decodeURIComponent(escape(s));
     } catch (e) {
       // see #16358
-      return s
+      return s;
     }
     // return String.fromCharCode.apply(null, uint8Array);
   }

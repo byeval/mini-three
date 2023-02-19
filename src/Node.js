@@ -1,13 +1,13 @@
-import EventTarget from './EventTarget.js'
+import EventTarget from './EventTarget.js';
 
 export default class Node extends EventTarget {
   constructor() {
-    super()
-    this.childNodes = []
+    super();
+    this.childNodes = [];
   }
 
   appendChild(node) {
-    this.childNodes.push(node)
+    this.childNodes.push(node);
     // if (node instanceof Node) {
     //   this.childNodes.push(node)
     // } else {
@@ -16,18 +16,18 @@ export default class Node extends EventTarget {
   }
 
   cloneNode() {
-    const copyNode = Object.create(this)
+    const copyNode = Object.create(this);
 
-    Object.assign(copyNode, this)
-    return copyNode
+    Object.assign(copyNode, this);
+    return copyNode;
   }
 
   removeChild(node) {
-    const index = this.childNodes.findIndex((child) => child === node)
+    const index = this.childNodes.findIndex((child) => child === node);
 
     if (index > -1) {
-      return this.childNodes.splice(index, 1)
+      return this.childNodes.splice(index, 1);
     }
-    return null
+    return null;
   }
 }
