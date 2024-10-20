@@ -1,8 +1,10 @@
 import { atob as _atob } from 'abab';
-import _XMLHttpRequest from './XMLHttpRequest';
-import _TextDecoder from './TextDecoder';
+import TextDecoder from './TextDecoder';
 import copyProperties from './copyProperties';
 import EventTarget from './EventTarget';
+import Blob from './Blob';
+import URL from './URL';
+import { Request, Headers, fetch, Response } from './whatwg-fetch';
 
 export function createScopedThreejs(canvas) {
   Object.defineProperty(canvas, 'style', {
@@ -40,7 +42,8 @@ export function createScopedThreejs(canvas) {
   // eslint-disable-next-line
   const window = {
     AudioContext: function () {},
-    URL: {},
+    URL,
+    Blob,
   };
   copyProperties(window.constructor.prototype, EventTarget.prototype);
 
@@ -50,13 +53,19 @@ export function createScopedThreejs(canvas) {
   };
 
   // eslint-disable-next-line
-  const XMLHttpRequest = _XMLHttpRequest;
+  // const XMLHttpRequest = _XMLHttpRequest;
 
   // eslint-disable-next-line
-  const TextDecoder = _TextDecoder;
+  // const TextDecoder = _TextDecoder;
 
   const exports = {
     TextDecoder,
+    URL,
+    Blob,
+    Request,
+    Headers,
+    Response,
+    fetch,
   };
 
   // eslint-disable-next-line

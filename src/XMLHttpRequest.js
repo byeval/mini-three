@@ -21,7 +21,7 @@ function _changeReadyState(readyState, event = {}) {
 }
 
 function _isRelativePath(url) {
-  return !/^(http|https|ftp|wxfile):\/\/.*/i.test(url);
+  return /^wxfile:\/\/.*/i.test(url);
 }
 
 export default class XMLHttpRequest extends EventTarget {
@@ -101,10 +101,10 @@ export default class XMLHttpRequest extends EventTarget {
       const relative = _isRelativePath(url);
       let encoding;
 
-      if (responseType === 'arraybuffer') {
-        // encoding = 'binary'
-      } else {
+      if (responseType === 'utf8') {
         encoding = 'utf8';
+      } else {
+        // encoding = 'binary'
       }
 
       delete this.response;
@@ -146,7 +146,7 @@ export default class XMLHttpRequest extends EventTarget {
 
       const onFail = ({ errMsg }) => {
         // TODO 规范错误
-
+        console.log(123, url, relative, errMsg);
         if (errMsg.indexOf('abort') !== -1) {
           _triggerEvent.call(this, 'abort');
         } else {

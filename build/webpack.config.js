@@ -47,6 +47,6 @@ module.exports = {
     new StringReplacePlugin(),
   ],
   optimization: {
-    minimize: true,
+    // minimize: true,
   },
 }
